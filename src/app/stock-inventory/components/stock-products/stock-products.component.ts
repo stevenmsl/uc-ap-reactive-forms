@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 
 @Component({
     selector: 'stock-products',
@@ -9,5 +9,13 @@ import { FormGroup } from '@angular/forms';
 export class StockProductsComponent {
     @Input()
     parent : FormGroup;
+
+    get stocks() {
+        const controls = 
+            (this.parent.get('stock') as FormArray).controls;
+          
+        //console.log(controls);
+        return controls;
+    }
 
 }
