@@ -1,5 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormArray } from '@angular/forms';
+
 
 @Component({
     selector: 'stock-products',
@@ -9,6 +10,13 @@ import { FormGroup, FormArray } from '@angular/forms';
 export class StockProductsComponent {
     @Input()
     parent : FormGroup;
+
+    @Output()
+    removed = new EventEmitter<any>();
+
+    onRemove(group, index) {
+        this.removed.emit({ group, index});
+    }
 
     get stocks() {
         const controls = 
