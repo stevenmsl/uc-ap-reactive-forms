@@ -1,16 +1,16 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
+import { InMemoryDataService } from "./in-memory-data.service";
 
-import { AppComponent } from './app.component';
-import { StockInventoryModule } from './stock-inventory/stock-inventory.module';
+import { AppComponent } from "./app.component";
+import { StockInventoryModule } from "./stock-inventory/stock-inventory.module";
+import { HttpErrorHandler } from "./http-error-handler.service";
+import { MessageService } from "./message.service";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     // import HttpClientModule after BrowserModule - why ?
@@ -18,17 +18,15 @@ import { StockInventoryModule } from './stock-inventory/stock-inventory.module';
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
-    // shut down the ‘ng serve’ and restart it if you encountered undefined error in App Module 
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, {
-        dataEncapsulation: false,
-        passThruUnknownUrl: true,
-        put204: false // return entity after PUT/update
-      }  
-    ),
-    StockInventoryModule 
+    // shut down the ‘ng serve’ and restart it if you encountered undefined error in App Module
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+      passThruUnknownUrl: true,
+      put204: false // return entity after PUT/update
+    }),
+    StockInventoryModule
   ],
-  providers: [],
+  providers: [HttpErrorHandler, MessageService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

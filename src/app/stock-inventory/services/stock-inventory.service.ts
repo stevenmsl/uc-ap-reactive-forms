@@ -3,13 +3,28 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Product, Item } from "../models/product.interface";
 import { catchError } from "rxjs/operators";
+import {
+  HandleError,
+  HttpErrorHandler
+} from "src/app/http-error-handler.service";
 
 @Injectable()
 export class StockInventoryService {
-  constructor(private http: HttpClient) {}
-  getCarItems(): Observable<Item[]> {
+  private handleError: HandleError;
+  constructor(private http: HttpClient, httpErrorHanlder: HttpErrorHandler) {
+    this.handleError = httpErrorHanlder.createHandleError(
+      "StockInventoryService"
+    );
+  }
+  getCartItems(): Observable<Item[]> {
     return this.http
       .get<Item[]>("/api/cart")
-      .pipe(catchError(err => Observable.throw(err.json())));
+      .pipe(catchError(this.handleError<Item[]>("getCartItems", [])));
+  }
+
+  getProducts(): Observable<Product[]> {
+    return this.http
+      .get<Product[]>("/api/products")
+      .pipe(catchError(this.handleError<Product[]>("getProducts", [])));
   }
 }
